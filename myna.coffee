@@ -1,4 +1,4 @@
-class Hillmyna
+class Myna
   compile: (tweet) ->
     speakable = tweet.user.name + "tweeted"
     if tweet.in_reply_to_user_id
