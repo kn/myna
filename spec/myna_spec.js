@@ -16,7 +16,7 @@
         "screen_name": "kn"
       };
       return tweet = {
-        "text": "",
+        "text": "I am testing Myna.",
         "user": user,
         "entities": entities
       };
@@ -24,10 +24,7 @@
     it("has Myna.compile defined as a function", function() {
       return expect(typeof Myna.compile).toEqual('function');
     });
-    describe("In case of no entities", function() {
-      beforeEach(function() {
-        return tweet.text = "I am testing Myna.";
-      });
+    describe("Tweet with no entities", function() {
       it("adds 'user.name tweeted' at the beginning", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: " + tweet.text;
@@ -70,9 +67,26 @@
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });
-    return describe("In case of mentions", function() {
-      beforeEach(function() {
-        return tweet.text = "I am testing Myna.";
+    describe("Tweet with mentions", function() {
+      it("replaces mentions in the tweet to name", function() {
+        var compiledText, mentions;
+        mentions = [
+          {
+            "name": "Barcelona FC",
+            "id": 15473839,
+            "indices": [7, 18],
+            "screen_name": "BarcelonaFC"
+          }, {
+            "name": "Real Madrid",
+            "id": 15473840,
+            "indices": [59, 69],
+            "screen_name": "RealMadrid"
+          }
+        ];
+        tweet.entities.user_mentions = mentions;
+        compiledText = "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid";
+        tweet.text = "Here's @BarcelonaFC preparing for the big game against @RealMadrid";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'RT @screen_name:' at the beginning to 'retweeted a tweet of name'", function() {
         var compiledText, mentions;
@@ -127,6 +141,21 @@
         tweet.entities.user_mentions = mentions;
         compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey, Dick Costolo and Michael Jackson: " + tweet.text;
         tweet.text = "@jack @dick @mj " + tweet.text;
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+    });
+    return describe("Tweet with hashtags", function() {
+      return it("replaces hashtags with the equivalent spacified word", function() {
+        var compiledText, hashtags;
+        hashtags = [
+          {
+            "text": "",
+            "indices": []
+          }
+        ];
+        tweet.entities.hashtags = hashtags;
+        compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY";
+        tweet.text = "I am testing #Myna #ILoveSF and #I_Love_NY";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

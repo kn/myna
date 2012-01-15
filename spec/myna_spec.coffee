@@ -14,7 +14,7 @@ describe "myna", ->
       "screen_name": "kn"
     }
     tweet = {
-      "text": "",
+      "text": "I am testing Myna.",
       "user": user,
       "entities": entities
     }
@@ -22,9 +22,7 @@ describe "myna", ->
   it "has Myna.compile defined as a function", ->
     expect(typeof Myna.compile).toEqual 'function'
   
-  describe "In case of no entities", ->
-    beforeEach ->
-      tweet.text = "I am testing Myna."
+  describe "Tweet with no entities", ->
       
     it "adds 'user.name tweeted' at the beginning", ->
       compiledText = "Katsuya Noguchi tweeted: #{tweet.text}" 
@@ -60,10 +58,25 @@ describe "myna", ->
       tweet.text = "Passed! RT: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
   
-  describe "In case of mentions", ->
-    beforeEach ->
-      tweet.text = "I am testing Myna."
+  describe "Tweet with mentions", ->
     
+    it "replaces mentions in the tweet to name", ->      
+      mentions = [{
+        "name": "Barcelona FC",
+        "id": 15473839,
+        "indices": [7, 18],
+        "screen_name": "BarcelonaFC"
+      }, {
+        "name": "Real Madrid",
+        "id": 15473840,
+        "indices": [59, 69],
+        "screen_name": "RealMadrid"
+      }]
+      tweet.entities.user_mentions = mentions
+      compiledText = "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid"
+      tweet.text = "Here's @BarcelonaFC preparing for the big game against @RealMadrid"
+      expect(Myna.compile(tweet)).toEqual compiledText
+      
     it "replaces 'RT @screen_name:' at the beginning to 'retweeted a tweet of name'", ->
       mentions = [{
         "name": "Jack Dorsey",
@@ -108,4 +121,16 @@ describe "myna", ->
       tweet.entities.user_mentions = mentions
       compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey, Dick Costolo and Michael Jackson: #{tweet.text}"
       tweet.text = "@jack @dick @mj #{tweet.text}"
+      expect(Myna.compile(tweet)).toEqual compiledText
+  
+  describe "Tweet with hashtags", ->
+    
+    it "replaces hashtags with the equivalent spacified word", ->
+      hashtags = [{
+        "text": "",
+        "indices": []
+      }]
+      tweet.entities.hashtags = hashtags
+      compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY"
+      tweet.text = "I am testing #Myna #ILoveSF and #I_Love_NY"
       expect(Myna.compile(tweet)).toEqual compiledText

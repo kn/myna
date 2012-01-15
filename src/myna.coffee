@@ -23,7 +23,7 @@
       console.log text
       speakable += " overheard"
     else if match = text.match /^RT\s@(\w+):/
-      name = Myna._get_name_by_screen_name(tweet, match[1])
+      name = Myna._get_name_by_screen_name(tweet.entities.user_mentions, match[1])
       speakable += " retweeted a tweet of #{name}"
       sliceFrom = 5 + match[1].length
       text = text[sliceFrom..text.length].trim()
@@ -44,15 +44,31 @@
     
     # Case when RT is in the middle of a tweet.
     if match = text.match /\sRT\s@(\w+):\s/
-      name = Myna._get_name_by_screen_name(tweet, match[1])
+      name = Myna._get_name_by_screen_name tweet.entities.user_mentions, match[1]
       text = text.replace /\sRT\s@\w+:\s/, " in reply to a tweet of #{name}: "
     text = text.replace /\sRT(\s|:\s)/, " in reply to: "
     
+    # Replace rest of the mentions
+    text = Myna._replace_mentions_with_name tweet.entities.user_mentions, text
+    
+    # Replace hashtags with the equivalent spacified word
+    hashtags = text.match /#\w+/g
+    if hashtags?
+      for hashtag in hashtags
+        regex = new RegExp(hashtag)
+        text = text.replace regex, Myna._spacify(hashtag[1..hashtag.length-1])
+    
     speakable += text
   
-  Myna._get_name_by_screen_name = (tweet, sn) ->
-    for mention in tweet.entities.user_mentions
+  Myna._get_name_by_screen_name = (mentions, sn) ->
+    for mention in mentions
       return mention.name if mention.screen_name == sn
+  
+  Myna._replace_mentions_with_name = (mentions, text) ->
+    for mention in mentions
+      regex = new RegExp("@#{mention.screen_name}")
+      text = text.replace regex, mention.name
+    text
   
   Myna._en_and_join = (items) ->
     if items.length== 1
@@ -65,7 +81,9 @@
   
   # Spacify continuous text. e.g. ILoveTwitter -> I Love Twitter
   Myna._spacify = (text) ->
-    text = text.replace /([A-Z])/g, " $1"
+    text = text.replace /_/g, " "
+    text = text.replace /([A-Z][a-z]+)/g, " $1 "
+    text = text.replace /\s\s/g, " "
     text.trim()
     
   # Returns array of in reply to names. Assumes mentions are ordered by its indices.
