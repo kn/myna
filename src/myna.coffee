@@ -1,5 +1,20 @@
-class Myna
-  compile: (tweet) ->
+( ->
+  root = this
+  previousMyna = root.Myna
+
+  Myna = {}
+  if typeof exports != 'undefined'
+    Myna = exports
+  else
+    Myna = root.Myna = {}
+  
+  Myna.VERSION = '0.0.0'
+  
+  Myna.noConflict = ->
+    root.Myna = previousMyna
+    @
+  
+  Myna.compile = (tweet) ->
     # Compose begining of speakable.
     text = tweet.text
     speakable = tweet.user.name
@@ -47,3 +62,4 @@ class Myna
         else
           break
     arr
+).call @
