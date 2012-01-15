@@ -58,6 +58,9 @@
         regex = new RegExp(hashtag)
         text = text.replace regex, Myna._spacify(hashtag[1..hashtag.length-1])
     
+    # Replace link with just host domain
+    text = Myna._replace_urls_with_speakable_text(tweet.entities.urls, text)
+    
     speakable += text
   
   Myna._get_name_by_screen_name = (mentions, sn) ->
@@ -68,6 +71,13 @@
     for mention in mentions
       regex = new RegExp("@#{mention.screen_name}")
       text = text.replace regex, mention.name
+    text
+  
+  Myna._replace_urls_with_speakable_text = (urls, text) ->
+    for url in urls
+      replacement = url.display_url.replace(/^([^\/]+)\/.*$/, "Link to $1")
+      regex = new RegExp("#{url.display_url}|#{url.url}")
+      text = text.replace regex, replacement
     text
   
   Myna._en_and_join = (items) ->

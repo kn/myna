@@ -55,6 +55,7 @@
           text = text.replace(regex, Myna._spacify(hashtag.slice(1, (hashtag.length - 1) + 1 || 9e9)));
         }
       }
+      text = Myna._replace_urls_with_speakable_text(tweet.entities.urls, text);
       return speakable += text;
     };
     Myna._get_name_by_screen_name = function(mentions, sn) {
@@ -70,6 +71,16 @@
         mention = mentions[_i];
         regex = new RegExp("@" + mention.screen_name);
         text = text.replace(regex, mention.name);
+      }
+      return text;
+    };
+    Myna._replace_urls_with_speakable_text = function(urls, text) {
+      var regex, replacement, url, _i, _len;
+      for (_i = 0, _len = urls.length; _i < _len; _i++) {
+        url = urls[_i];
+        replacement = url.display_url.replace(/^([^\/]+)\/.*$/, "Link to $1");
+        regex = new RegExp("" + url.display_url + "|" + url.url);
+        text = text.replace(regex, replacement);
       }
       return text;
     };

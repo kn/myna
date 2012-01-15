@@ -144,7 +144,7 @@
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });
-    return describe("Tweet with hashtags", function() {
+    describe("Tweet with hashtags", function() {
       return it("replaces hashtags with the equivalent spacified word", function() {
         var compiledText, hashtags;
         hashtags = [
@@ -156,6 +156,23 @@
         tweet.entities.hashtags = hashtags;
         compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY";
         tweet.text = "I am testing #Myna #ILoveSF and #I_Love_NY";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+    });
+    return describe("Tweet with urls", function() {
+      return it("replaces urls in a tweet", function() {
+        var compiledText, urls;
+        urls = [
+          {
+            "url": "http://t.co/0JG5Mcq",
+            "display_url": "blog.twitter.com/2011/05/twitte…",
+            "expanded_url": "http://blog.twitter.com/2011/05/twitter-for-mac-update.html",
+            "indices": [84, 103]
+          }
+        ];
+        tweet.entities.urls = urls;
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once Link to blog.twitter.com";
+        tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

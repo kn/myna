@@ -134,3 +134,17 @@ describe "myna", ->
       compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY"
       tweet.text = "I am testing #Myna #ILoveSF and #I_Love_NY"
       expect(Myna.compile(tweet)).toEqual compiledText
+  
+  describe "Tweet with urls", ->
+    
+    it "replaces urls in a tweet", ->
+      urls = [{
+        "url": "http://t.co/0JG5Mcq",
+        "display_url": "blog.twitter.com/2011/05/twitte…",
+        "expanded_url": "http://blog.twitter.com/2011/05/twitter-for-mac-update.html",
+        "indices": [84, 103]
+      }]
+      tweet.entities.urls = urls
+      compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once Link to blog.twitter.com"
+      tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
+      expect(Myna.compile(tweet)).toEqual compiledText
