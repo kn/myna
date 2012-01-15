@@ -171,7 +171,7 @@
           }
         ];
         tweet.entities.urls = urls;
-        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once Link to blog.twitter.com";
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to blog dot twitter dot com)";
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
