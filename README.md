@@ -10,11 +10,11 @@ Download myna-min.js file.
 
 Add following tag into your html file:
 
- <script type="text/javascript" src="public/javascripts/myna-min.js"></script>
+    <script type="text/javascript" src="public/javascripts/myna-min.js"></script>
 
 Compile a tweet object to speakable text:
 
- speakable = Myna.compile(tweet);
+    speakable = Myna.compile(tweet);
 
 That's it!
 
