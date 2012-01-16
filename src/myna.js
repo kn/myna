@@ -14,39 +14,53 @@
       root.Myna = previousMyna;
       return this;
     };
+    /*
+      # Compiles tweet text to machine speakable text.
+    */
     Myna.compile = function(tweet) {
-      var hashtag, hashtags, in_reply_to, in_reply_to_array, match, name, regex, sliceFrom, speakable, text, _i, _len, _ref;
+      var hashtags, mentions, speakable, text;
       text = tweet.text;
       speakable = tweet.user.name;
+      mentions = tweet.entities.user_mentions;
+      hashtags = tweet.entities.hashtags;
+      speakable += " " + (Myna._get_context(mentions, text)) + ": ";
+      text = Myna._slice_context(text);
+      text = Myna._replace_rt_with_speakable(mentions, text);
+      text = Myna._replace_mentions_with_speakable(mentions, text);
+      text = Myna._replace_hashtags_with_speakable(hashtags, text);
+      text = Myna._replace_urls_with_speakable(tweet.entities.urls, text);
+      return speakable += text;
+    };
+    Myna._get_context = function(mentions, text) {
+      var in_reply_to, in_reply_to_array, match, name;
       if (text.match(/^OH[\s:]/)) {
-        text = text.slice(3, text.length + 1 || 9e9).trim();
-        console.log(text);
-        speakable += " overheard";
+        return "overheard";
       } else if (match = text.match(/^RT\s@(\w+):/)) {
-        name = Myna._get_name_by_screen_name(tweet.entities.user_mentions, match[1]);
-        speakable += " retweeted a tweet of " + name;
-        sliceFrom = 5 + match[1].length;
-        text = text.slice(sliceFrom, text.length + 1 || 9e9).trim();
+        name = Myna._get_name_by_screen_name(mentions, match[1]);
+        return "retweeted a tweet of " + name;
       } else if (text.match(/^RT[\s:]/)) {
-        speakable += " retweeted";
-        text = text.slice(3, text.length + 1 || 9e9).trim();
-      } else {
-        speakable += " tweeted";
-      }
-      if (((_ref = tweet.entities.user_mentions[0]) != null ? _ref.indices[0] : void 0) === 0) {
-        in_reply_to_array = Myna._get_in_reply_to_array(tweet.entities.user_mentions);
-        sliceFrom = tweet.entities.user_mentions[in_reply_to_array.length - 1].indices[1] + 2;
-        text = text.slice(sliceFrom, text.length + 1 || 9e9);
+        return "retweeted";
+      } else if (text.match(/^(@\w+\s)+/)) {
+        in_reply_to_array = Myna._get_in_reply_to_array(mentions);
         in_reply_to = Myna._en_and_join(in_reply_to_array);
-        speakable += " in reply to " + in_reply_to;
+        return "tweeted in reply to " + in_reply_to;
+      } else {
+        return "tweeted";
       }
-      speakable += ": ";
+    };
+    Myna._slice_context = function(text) {
+      return text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim();
+    };
+    Myna._replace_rt_with_speakable = function(mentions, text) {
+      var match, name;
       if (match = text.match(/\sRT\s@(\w+):\s/)) {
-        name = Myna._get_name_by_screen_name(tweet.entities.user_mentions, match[1]);
+        name = Myna._get_name_by_screen_name(mentions, match[1]);
         text = text.replace(/\sRT\s@\w+:\s/, " in reply to a tweet of " + name + ": ");
       }
-      text = text.replace(/\sRT(\s|:\s)/, " in reply to: ");
-      text = Myna._replace_mentions_with_name(tweet.entities.user_mentions, text);
+      return text.replace(/\sRT(\s|:\s)/, " in reply to: ");
+    };
+    Myna._replace_hashtags_with_speakable = function(hashtags, text) {
+      var hashtag, regex, _i, _len;
       hashtags = text.match(/#\w+/g);
       if (hashtags != null) {
         for (_i = 0, _len = hashtags.length; _i < _len; _i++) {
@@ -55,26 +69,9 @@
           text = text.replace(regex, Myna._spacify(hashtag.slice(1, (hashtag.length - 1) + 1 || 9e9)));
         }
       }
-      text = Myna._replace_urls_with_speakable_text(tweet.entities.urls, text);
-      return speakable += text;
-    };
-    Myna._get_name_by_screen_name = function(mentions, sn) {
-      var mention, _i, _len;
-      for (_i = 0, _len = mentions.length; _i < _len; _i++) {
-        mention = mentions[_i];
-        if (mention.screen_name === sn) return mention.name;
-      }
-    };
-    Myna._replace_mentions_with_name = function(mentions, text) {
-      var mention, regex, _i, _len;
-      for (_i = 0, _len = mentions.length; _i < _len; _i++) {
-        mention = mentions[_i];
-        regex = new RegExp("@" + mention.screen_name);
-        text = text.replace(regex, mention.name);
-      }
       return text;
     };
-    Myna._replace_urls_with_speakable_text = function(urls, text) {
+    Myna._replace_urls_with_speakable = function(urls, text) {
       var regex, replacement, url, _i, _len;
       for (_i = 0, _len = urls.length; _i < _len; _i++) {
         url = urls[_i];
@@ -84,6 +81,22 @@
         text = text.replace(regex, replacement);
       }
       return text;
+    };
+    Myna._replace_mentions_with_speakable = function(mentions, text) {
+      var mention, regex, _i, _len;
+      for (_i = 0, _len = mentions.length; _i < _len; _i++) {
+        mention = mentions[_i];
+        regex = new RegExp("@" + mention.screen_name);
+        text = text.replace(regex, mention.name);
+      }
+      return text;
+    };
+    Myna._get_name_by_screen_name = function(mentions, sn) {
+      var mention, _i, _len;
+      for (_i = 0, _len = mentions.length; _i < _len; _i++) {
+        mention = mentions[_i];
+        if (mention.screen_name === sn) return mention.name;
+      }
     };
     Myna._en_and_join = function(items) {
       var ret;
