@@ -18,3 +18,11 @@ Types:
   - video
   - photo
   - 
+
+TTS:
+- speech.js ... client side, browser dependent
+- Android ... hardware dependent
+- iOS ...  hardware dependent
+- chrome API ... strictly browser dependent
+
+formant synthesis ... speech is clear and high speeds but not as natural or smooth as larger synthesizers which are based on human speech recording.
