@@ -9,7 +9,7 @@
     } else {
       Myna = root.Myna = {};
     }
-    Myna.VERSION = '0.0.0';
+    Myna.VERSION = '0.1.0';
     Myna.noConflict = function() {
       root.Myna = previousMyna;
       return this;
