@@ -29,9 +29,9 @@ Examples
         "screen_name": "kn"
       },
       "entities": { "urls": [], "hashtags": [], "user_mentions": [] }
-    }
+    };
 
-    Myna.compile(tweet)
+    Myna.compile(tweet);
     
 returns "Katsuya Noguchi tweeted: Myna is awesome!".
 
@@ -43,9 +43,9 @@ returns "Katsuya Noguchi tweeted: Myna is awesome!".
         "screen_name": "kn"
       },
       "entities": { "urls": [], "hashtags": [], "user_mentions": [] }
-    }
+    };
 
-    Myna.compile(tweet)
+    Myna.compile(tweet);
 
 returns "Katsuya Noguchi overheard: Myna is awesome!".
 
@@ -68,9 +68,9 @@ returns "Katsuya Noguchi overheard: Myna is awesome!".
         "indices": [59, 69],
         "screen_name": "RealMadrid"
       }] }
-    }
+    };
 
-    Myna.compile(tweet)
+    Myna.compile(tweet);
 
 returns "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid".
 
