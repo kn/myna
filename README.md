@@ -50,7 +50,7 @@ returns "Katsuya Noguchi tweeted: Myna is awesome!".
 returns "Katsuya Noguchi overheard: Myna is awesome!".
 
     tweet = {
-      "text": "Here's @BarcelonaFC preparing for the big game against     @RealMadrid",
+      "text": "Here's @BarcelonaFC preparing for the big game against @RealMadrid",
       "user": {
         "id": 29733,
         "name": "Katsuya Noguchi",
