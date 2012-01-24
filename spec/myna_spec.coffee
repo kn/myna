@@ -137,14 +137,35 @@ describe "myna", ->
   
   describe "Tweet with urls", ->
     
-    it "replaces urls in a tweet", ->
+    it "replaces urls with display_url if it is available", ->
       urls = [{
         "url": "http://t.co/0JG5Mcq",
-        "display_url": "blog.twitter.com/2011/05/twitte…",
+        "display_url": "display.twitter.com/2011/05/twitte…",
         "expanded_url": "http://blog.twitter.com/2011/05/twitter-for-mac-update.html",
         "indices": [84, 103]
       }]
       tweet.entities.urls = urls
-      compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to blog dot twitter dot com)"
+      compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)"
+      tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
+      expect(Myna.compile(tweet)).toEqual compiledText
+
+    it "replaces urls with expanded_url if it is display_url is not available", ->
+      urls = [{
+        "url": "http://t.co/0JG5Mcq",
+        "expanded_url": "http://expanded.twitter.com/2011/05/twitter-for-mac-update.html",
+        "indices": [84, 103]
+      }]
+      tweet.entities.urls = urls
+      compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)"
+      tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
+      expect(Myna.compile(tweet)).toEqual compiledText
+
+    it "replaces urls with host name of url if display_url and expanded_url are not available", ->
+      urls = [{
+        "url": "http://t.co/0JG5Mcq",
+        "indices": [84, 103]
+      }]
+      tweet.entities.urls = urls
+      compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)"
       tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
       expect(Myna.compile(tweet)).toEqual compiledText

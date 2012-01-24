@@ -71,14 +71,16 @@
   Myna._replace_urls_with_speakable = (urls, text) ->
     for url in urls
       if url.display_url
-        replacement = url.display_url.replace /^([^\/]+)\/.*$/, "(Link to $1)"
+        readableUrl = url.display_url
       else if url.expanded_url
-        replacement = url.expanded_url.replace /^([^\/]+)\/.*$/, "(Link to $1)"
+        readableUrl = url.expanded_url
       else
-        replacement = url.url.replace /^([^\/]+)\/.*$/, "(Link to $1)"
-      replacement = replacement.replace /\./g, " dot "
+        readableUrl = url.url
+      readableUrl = readableUrl.replace /^https?:\/\//, ""
+      readableUrl = readableUrl.replace /^([^\/]+)\/.*$/, "$1"
+      readableUrl = readableUrl.replace /\./g, " dot "
       regex = new RegExp "#{url.display_url}|#{url.url}"
-      text = text.replace regex, replacement
+      text = text.replace regex, "(Link to #{readableUrl})"
     text
 
   Myna._replace_mentions_with_speakable = (mentions, text) ->

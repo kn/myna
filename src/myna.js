@@ -72,19 +72,21 @@
       return text;
     };
     Myna._replace_urls_with_speakable = function(urls, text) {
-      var regex, replacement, url, _i, _len;
+      var readableUrl, regex, url, _i, _len;
       for (_i = 0, _len = urls.length; _i < _len; _i++) {
         url = urls[_i];
         if (url.display_url) {
-          replacement = url.display_url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+          readableUrl = url.display_url;
         } else if (url.expanded_url) {
-          replacement = url.expanded_url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+          readableUrl = url.expanded_url;
         } else {
-          replacement = url.url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+          readableUrl = url.url;
         }
-        replacement = replacement.replace(/\./g, " dot ");
+        readableUrl = readableUrl.replace(/^https?:\/\//, "");
+        readableUrl = readableUrl.replace(/^([^\/]+)\/.*$/, "$1");
+        readableUrl = readableUrl.replace(/\./g, " dot ");
         regex = new RegExp("" + url.display_url + "|" + url.url);
-        text = text.replace(regex, replacement);
+        text = text.replace(regex, "(Link to " + readableUrl + ")");
       }
       return text;
     };
