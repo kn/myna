@@ -75,7 +75,13 @@
       var regex, replacement, url, _i, _len;
       for (_i = 0, _len = urls.length; _i < _len; _i++) {
         url = urls[_i];
-        replacement = url.display_url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+        if (url.display_url) {
+          replacement = url.display_url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+        } else if (url.expanded_url) {
+          replacement = url.expanded_url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+        } else {
+          replacement = url.url.replace(/^([^\/]+)\/.*$/, "(Link to $1)");
+        }
         replacement = replacement.replace(/\./g, " dot ");
         regex = new RegExp("" + url.display_url + "|" + url.url);
         text = text.replace(regex, replacement);
