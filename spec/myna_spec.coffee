@@ -57,7 +57,17 @@ describe "myna", ->
       compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to: #{tweet.text}\""
       tweet.text = "Passed! RT: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
-  
+    
+    it "replaces 'HT' in the tweet to 'Heard through'", ->
+      compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through #{tweet.text}\""
+      tweet.text = "Passed! HT #{tweet.text}"
+      expect(Myna.compile(tweet)).toEqual compiledText
+
+    it "replaces 'HT:' in the tweet to 'Heard through'", ->
+      compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through #{tweet.text}\""
+      tweet.text = "Passed! HT: #{tweet.text}"
+      expect(Myna.compile(tweet)).toEqual compiledText
+
   describe "Tweet with mentions", ->
     
     it "replaces mentions in the tweet to name", ->      
@@ -200,9 +210,8 @@ describe "myna", ->
       compiledText = "Katsuya Noguchi tweeted: \"#{tweet.text} with someone\""
       tweet.text = "#{tweet.text} w/ someone"
       expect(Myna.compile(tweet)).toEqual compiledText
-    
+
     it "remove smiley faces", ->
       compiledText = "Katsuya Noguchi tweeted: \"one two three four five six seven\""
       tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven"
       expect(Myna.compile(tweet)).toEqual compiledText
-      

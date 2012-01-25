@@ -60,10 +60,22 @@
         tweet.text = "Passed! RT " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      return it("replaces 'RT:' in the tweet to 'Retweeted:'", function() {
+      it("replaces 'RT:' in the tweet to 'Retweeted:'", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to: " + tweet.text + "\"";
         tweet.text = "Passed! RT: " + tweet.text;
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      it("replaces 'HT' in the tweet to 'Heard through'", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through " + tweet.text + "\"";
+        tweet.text = "Passed! HT " + tweet.text;
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      return it("replaces 'HT:' in the tweet to 'Heard through'", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through " + tweet.text + "\"";
+        tweet.text = "Passed! HT: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

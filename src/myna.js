@@ -27,6 +27,7 @@
       startContext = " " + (Myna._get_start_context(mentions, text)) + ": \"";
       text = Myna._slice_context(text);
       endContext = Myna._get_end_context(text);
+      text = Myna._replace_ht_with_speakable(text);
       text = Myna._replace_rt_with_speakable(mentions, text);
       text = Myna._replace_mentions_with_speakable(mentions, text);
       text = Myna._replace_hashtags_with_speakable(hashtags, text);
@@ -67,6 +68,9 @@
         text = text.replace(/\sRT\s@\w+:\s/, " in reply to a tweet of " + name + ": ");
       }
       return text.replace(/\sRT(\s|:\s)/, " in reply to: ");
+    };
+    Myna._replace_ht_with_speakable = function(text) {
+      return text.replace(/HT:?/, "Heard through");
     };
     Myna._replace_hashtags_with_speakable = function(hashtags, text) {
       var hashtag, regex, _i, _len;
