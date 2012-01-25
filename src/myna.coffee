@@ -39,7 +39,7 @@
     else
       text = Myna._remove_urls tweet.entities.urls, text
 
-    speakable += text
+    speakable += "\"#{text}\""
 
   Myna._get_context = (mentions, text) ->
     if text.match /^OH[\s:]/

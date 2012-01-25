@@ -34,7 +34,7 @@
       } else {
         text = Myna._remove_urls(tweet.entities.urls, text);
       }
-      return speakable += text;
+      return speakable += "\"" + text + "\"";
     };
     Myna._get_context = function(mentions, text) {
       var in_reply_to, in_reply_to_array, match, name;
