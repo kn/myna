@@ -9,7 +9,7 @@
     } else {
       Myna = root.Myna = {};
     }
-    Myna.VERSION = '0.1.0';
+    Myna.VERSION = '0.2.0';
     Myna.noConflict = function() {
       root.Myna = previousMyna;
       return this;
@@ -112,13 +112,15 @@
       var mention, regex, _i, _len;
       for (_i = 0, _len = mentions.length; _i < _len; _i++) {
         mention = mentions[_i];
-        regex = new RegExp("@" + mention.screen_name);
+        regex = new RegExp("@" + mention.screen_name, "i");
         text = text.replace(regex, mention.name);
       }
       return text;
     };
     Myna._handle_special_cases = function(text) {
-      return text.replace(/^\./, "");
+      text = text.replace(/^\./, "");
+      text = text.replace(/\sw\/\s/, " with ");
+      return text;
     };
     Myna._get_name_by_screen_name = function(mentions, sn) {
       var mention, _i, _len;

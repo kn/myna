@@ -111,7 +111,7 @@ describe "myna", ->
         "name": "Dick Costolo",
         "id": 15473840,
         "indices": [6, 10],
-        "screen_name": "dick"
+        "screen_name": "Dick"
       }, {
         "name": "Michael Jackson",
         "id": 154737777,
@@ -194,5 +194,10 @@ describe "myna", ->
       tweet.entities.user_mentions = mentions
       compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: \"#{tweet.text}\""
       tweet.text = ".@jack #{tweet.text}"
+      expect(Myna.compile(tweet)).toEqual compiledText
+
+    it "replace w/ with 'with'", ->
+      compiledText = "Katsuya Noguchi tweeted: \"#{tweet.text} with someone\""
+      tweet.text = "#{tweet.text} w/ someone"
       expect(Myna.compile(tweet)).toEqual compiledText
       

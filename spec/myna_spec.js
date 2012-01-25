@@ -130,7 +130,7 @@
             "name": "Dick Costolo",
             "id": 15473840,
             "indices": [6, 10],
-            "screen_name": "dick"
+            "screen_name": "Dick"
           }, {
             "name": "Michael Jackson",
             "id": 154737777,
@@ -227,7 +227,7 @@
       });
     });
     return describe("special cases", function() {
-      return it("removes dot at the begining", function() {
+      it("removes dot at the begining", function() {
         var compiledText, mentions;
         mentions = [
           {
@@ -240,6 +240,12 @@
         tweet.entities.user_mentions = mentions;
         compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: \"" + tweet.text + "\"";
         tweet.text = ".@jack " + tweet.text;
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      return it("replace w/ with 'with'", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: \"" + tweet.text + " with someone\"";
+        tweet.text = "" + tweet.text + " w/ someone";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

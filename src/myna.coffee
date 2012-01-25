@@ -100,13 +100,15 @@
 
   Myna._replace_mentions_with_speakable = (mentions, text) ->
     for mention in mentions
-      regex = new RegExp "@#{mention.screen_name}"
+      regex = new RegExp "@#{mention.screen_name}", "i"
       text = text.replace regex, mention.name
     text
 
   Myna._handle_special_cases = (text) ->
     # Users sometimes uses . at the begining to publish replies.
-    text.replace /^\./, ""
+    text = text.replace /^\./, ""
+    text = text.replace /\sw\/\s/, " with "
+    text
 
   Myna._get_name_by_screen_name = (mentions, sn) ->
     for mention in mentions
