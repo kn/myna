@@ -18,14 +18,16 @@
       # Compiles tweet text to machine speakable text.
     */
     Myna.compile = function(tweet, args) {
-      var hashtags, mentions, speakable, startContext, text;
+      var hashtags, media, mentions, speakable, startContext, text;
       text = tweet.text;
       speakable = tweet.user.name;
       mentions = tweet.entities.user_mentions;
       hashtags = tweet.entities.hashtags;
+      media = tweet.entities.media;
       text = Myna._handle_special_cases(text);
-      startContext = " " + (Myna._get_start_context(mentions, text)) + ": ";
+      startContext = " " + (Myna._get_start_context(mentions, media, text)) + ": ";
       text = Myna._slice_context(text);
+      text = Myna._remove_media_links(media, text);
       text = Myna._replace_ht_with_speakable(text);
       text = Myna._replace_rt_with_speakable(mentions, text);
       text = Myna._replace_mentions_with_speakable(mentions, text);
@@ -37,22 +39,25 @@
       }
       return speakable += "" + startContext + text;
     };
-    Myna._get_start_context = function(mentions, text) {
-      var in_reply_to, in_reply_to_array, match, name;
+    Myna._get_start_context = function(mentions, media, text) {
+      var context, in_reply_to, in_reply_to_array, match, name;
+      context = "";
       if (text.match(/^OH[\s:]/)) {
-        return "overheard";
+        context = "overheard";
       } else if (match = text.match(/^RT\s@(\w+):/)) {
         name = Myna._get_name_by_screen_name(mentions, match[1]);
-        return "retweeted a tweet of " + name;
+        context = "retweeted a tweet of " + name;
       } else if (text.match(/^RT[\s:]/)) {
-        return "retweeted";
+        context = "retweeted";
       } else if (text.match(/^(@\w+\s)+/)) {
         in_reply_to_array = Myna._get_in_reply_to_array(mentions);
         in_reply_to = Myna._en_and_join(in_reply_to_array);
-        return "tweeted in reply to " + in_reply_to;
+        context = "tweeted in reply to " + in_reply_to;
       } else {
-        return "tweeted";
+        context = "tweeted";
       }
+      if (media && media.length > 0) context += " with " + media[0].type;
+      return context;
     };
     Myna._slice_context = function(text) {
       return text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim();
@@ -114,6 +119,17 @@
         mention = mentions[_i];
         regex = new RegExp("@" + mention.screen_name, "i");
         text = text.replace(regex, mention.name);
+      }
+      return text;
+    };
+    Myna._remove_media_links = function(media, text) {
+      var m, regex, _i, _len;
+      if (media) {
+        for (_i = 0, _len = media.length; _i < _len; _i++) {
+          m = media[_i];
+          regex = new RegExp("\s?(" + m.display_url + "|" + m.url + ")\s?");
+          text = text.replace(regex, " ");
+        }
       }
       return text;
     };

@@ -22,11 +22,14 @@
     speakable = tweet.user.name
     mentions = tweet.entities.user_mentions
     hashtags = tweet.entities.hashtags
+    media = tweet.entities.media
 
     text = Myna._handle_special_cases text
 
-    startContext = " #{Myna._get_start_context mentions, text}: "
+    startContext = " #{Myna._get_start_context mentions, media, text}: "
     text = Myna._slice_context text
+    
+    text = Myna._remove_media_links media, text
 
     text = Myna._replace_ht_with_speakable text
 
@@ -43,20 +46,24 @@
 
     speakable += "#{startContext}#{text}"
 
-  Myna._get_start_context = (mentions, text) ->
+  Myna._get_start_context = (mentions, media, text) ->
+    context = ""
     if text.match /^OH[\s:]/
-      "overheard"
+      context = "overheard"
     else if match = text.match /^RT\s@(\w+):/
       name = Myna._get_name_by_screen_name mentions, match[1]
-      "retweeted a tweet of #{name}"
+      context = "retweeted a tweet of #{name}"
     else if text.match /^RT[\s:]/
-      "retweeted"
+      context = "retweeted"
     else if text.match /^(@\w+\s)+/
       in_reply_to_array = Myna._get_in_reply_to_array mentions
       in_reply_to = Myna._en_and_join in_reply_to_array
-      "tweeted in reply to #{in_reply_to}"
+      context = "tweeted in reply to #{in_reply_to}"
     else
-      "tweeted"
+      context = "tweeted"
+    if media && media.length > 0
+      context += " with #{media[0].type}"
+    context
 
   Myna._slice_context = (text) ->
     text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim()
@@ -103,6 +110,13 @@
     for mention in mentions
       regex = new RegExp "@#{mention.screen_name}", "i"
       text = text.replace regex, mention.name
+    text
+
+  Myna._remove_media_links = (media, text) ->
+    if media
+      for m in media
+        regex = new RegExp "\s?(#{m.display_url}|#{m.url})\s?"
+        text = text.replace regex, " "
     text
 
   Myna._handle_special_cases = (text) ->
