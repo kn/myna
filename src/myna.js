@@ -23,6 +23,7 @@
       speakable = tweet.user.name;
       mentions = tweet.entities.user_mentions;
       hashtags = tweet.entities.hashtags;
+      text = Myna._handle_special_cases(text);
       speakable += " " + (Myna._get_context(mentions, text)) + ": ";
       text = Myna._slice_context(text);
       text = Myna._replace_rt_with_speakable(mentions, text);
@@ -111,6 +112,9 @@
         text = text.replace(regex, mention.name);
       }
       return text;
+    };
+    Myna._handle_special_cases = function(text) {
+      return text.replace(/^\./, "");
     };
     Myna._get_name_by_screen_name = function(mentions, sn) {
       var mention, _i, _len;

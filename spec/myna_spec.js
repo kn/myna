@@ -159,7 +159,7 @@
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });
-    return describe("Tweet with urls", function() {
+    describe("Tweet with urls", function() {
       it("removes urls", function() {
         var compiledText, urls;
         urls = [
@@ -224,6 +224,23 @@
             withURL: true
           })).toEqual(compiledText);
         });
+      });
+    });
+    return describe("special cases", function() {
+      return it("removes dot at the begining", function() {
+        var compiledText, mentions;
+        mentions = [
+          {
+            "name": "Jack Dorsey",
+            "id": 15473839,
+            "indices": [1, 5],
+            "screen_name": "jack"
+          }
+        ];
+        tweet.entities.user_mentions = mentions;
+        compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: " + tweet.text;
+        tweet.text = ".@jack " + tweet.text;
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });
   });

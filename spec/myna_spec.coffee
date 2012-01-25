@@ -182,3 +182,17 @@ describe "myna", ->
         compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)"
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
         expect(Myna.compile(tweet, {withURL: true})).toEqual compiledText
+
+  describe "special cases", ->
+    it "removes dot at the begining", ->
+      mentions = [{
+        "name": "Jack Dorsey",
+        "id": 15473839,
+        "indices": [1, 5],
+        "screen_name": "jack"
+      }]
+      tweet.entities.user_mentions = mentions
+      compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: #{tweet.text}"
+      tweet.text = ".@jack #{tweet.text}"
+      expect(Myna.compile(tweet)).toEqual compiledText
+      

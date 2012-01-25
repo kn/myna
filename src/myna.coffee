@@ -23,6 +23,8 @@
     mentions = tweet.entities.user_mentions
     hashtags = tweet.entities.hashtags
     
+    text = Myna._handle_special_cases text
+    
     speakable += " #{Myna._get_context(mentions, text)}: "
     text = Myna._slice_context text
     
@@ -97,6 +99,10 @@
       regex = new RegExp "@#{mention.screen_name}"
       text = text.replace regex, mention.name
     text
+
+  Myna._handle_special_cases = (text) ->
+    # Users sometimes uses . at the begining to publish replies.
+    text.replace /^\./, ""
 
   Myna._get_name_by_screen_name = (mentions, sn) ->
     for mention in mentions
