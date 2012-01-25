@@ -25,46 +25,46 @@ describe "myna", ->
   describe "Tweet with no entities", ->
       
     it "adds 'user.name tweeted' at the beginning", ->
-      compiledText = "Katsuya Noguchi tweeted: \"#{tweet.text}\"" 
+      compiledText = "Katsuya Noguchi tweeted: #{tweet.text}" 
       expect(Myna.compile(tweet)).toEqual compiledText
     
     it "replaces 'OH' at the beginning to 'overheard'", ->
-      compiledText = "Katsuya Noguchi overheard: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi overheard: #{tweet.text}"
       tweet.text = "OH #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
       
     it "replaces 'OH:' at the beginning to 'overheard'", ->
-      compiledText = "Katsuya Noguchi overheard: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi overheard: #{tweet.text}"
       tweet.text = "OH: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
     
     it "replaces 'RT' at the begining to 'retweeted", ->
-      compiledText = "Katsuya Noguchi retweeted: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi retweeted: #{tweet.text}"
       tweet.text = "RT #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
     
     it "replaces 'RT:' at the begining to 'retweeted", ->
-      compiledText = "Katsuya Noguchi retweeted: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi retweeted: #{tweet.text}"
       tweet.text = "RT: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
     
     it "replaces 'RT' in the tweet to 'Retweeted:'", ->
-      compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to: #{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted: Passed! in reply to: #{tweet.text}"
       tweet.text = "Passed! RT #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
     
     it "replaces 'RT:' in the tweet to 'Retweeted:'", ->
-      compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to: #{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted: Passed! in reply to: #{tweet.text}"
       tweet.text = "Passed! RT: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
     
     it "replaces 'HT' in the tweet to 'Heard through'", ->
-      compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through #{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted: Passed! Heard through #{tweet.text}"
       tweet.text = "Passed! HT #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
 
     it "replaces 'HT:' in the tweet to 'Heard through'", ->
-      compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through #{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted: Passed! Heard through #{tweet.text}"
       tweet.text = "Passed! HT: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
 
@@ -83,7 +83,7 @@ describe "myna", ->
         "screen_name": "RealMadrid"
       }]
       tweet.entities.user_mentions = mentions
-      compiledText = "Katsuya Noguchi tweeted: \"Here's Barcelona FC preparing for the big game against Real Madrid\""
+      compiledText = "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid"
       tweet.text = "Here's @BarcelonaFC preparing for the big game against @RealMadrid"
       expect(Myna.compile(tweet)).toEqual compiledText
       
@@ -95,7 +95,7 @@ describe "myna", ->
         "screen_name": "jack"
       }]
       tweet.entities.user_mentions = mentions
-      compiledText = "Katsuya Noguchi retweeted a tweet of Jack Dorsey: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi retweeted a tweet of Jack Dorsey: #{tweet.text}"
       tweet.text = "RT @jack: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
 
@@ -107,7 +107,7 @@ describe "myna", ->
         "screen_name": "jack"
       }]
       tweet.entities.user_mentions = mentions
-      compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to a tweet of Jack Dorsey: #{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted: Passed! in reply to a tweet of Jack Dorsey: #{tweet.text}"
       tweet.text = "Passed! RT @jack: #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
     
@@ -129,7 +129,7 @@ describe "myna", ->
         "screen_name": "mj"
       }]
       tweet.entities.user_mentions = mentions
-      compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey, Dick Costolo and Michael Jackson: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey, Dick Costolo and Michael Jackson: #{tweet.text}"
       tweet.text = "@jack @dick @mj #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
   
@@ -141,7 +141,7 @@ describe "myna", ->
         "indices": []
       }]
       tweet.entities.hashtags = hashtags
-      compiledText = "Katsuya Noguchi tweeted: \"I am testing Myna I Love SF and I Love NY\""
+      compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY"
       tweet.text = "I am testing #Myna #ILoveSF and #I_Love_NY"
       expect(Myna.compile(tweet)).toEqual compiledText
   
@@ -155,7 +155,7 @@ describe "myna", ->
         "indices": [84, 103]
       }]
       tweet.entities.urls = urls
-      compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once\""
+      compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once"
       tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
       expect(Myna.compile(tweet)).toEqual compiledText
     
@@ -168,7 +168,7 @@ describe "myna", ->
           "indices": [84, 103]
         }]
         tweet.entities.urls = urls
-        compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)\""
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)"
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
         expect(Myna.compile(tweet, {withURL: true})).toEqual compiledText
 
@@ -179,7 +179,7 @@ describe "myna", ->
           "indices": [84, 103]
         }]
         tweet.entities.urls = urls
-        compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)\""
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)"
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
         expect(Myna.compile(tweet, {withURL: true})).toEqual compiledText
 
@@ -189,7 +189,7 @@ describe "myna", ->
           "indices": [84, 103]
         }]
         tweet.entities.urls = urls
-        compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)\""
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)"
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq"
         expect(Myna.compile(tweet, {withURL: true})).toEqual compiledText
 
@@ -202,16 +202,16 @@ describe "myna", ->
         "screen_name": "jack"
       }]
       tweet.entities.user_mentions = mentions
-      compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: \"#{tweet.text}\""
+      compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: #{tweet.text}"
       tweet.text = ".@jack #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
 
     it "replace w/ with 'with'", ->
-      compiledText = "Katsuya Noguchi tweeted: \"#{tweet.text} with someone\""
+      compiledText = "Katsuya Noguchi tweeted: #{tweet.text} with someone"
       tweet.text = "#{tweet.text} w/ someone"
       expect(Myna.compile(tweet)).toEqual compiledText
 
     it "remove smiley faces", ->
-      compiledText = "Katsuya Noguchi tweeted: \"one two three four five six seven\""
+      compiledText = "Katsuya Noguchi tweeted: one two three four five six seven"
       tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven"
       expect(Myna.compile(tweet)).toEqual compiledText

@@ -27,54 +27,54 @@
     describe("Tweet with no entities", function() {
       it("adds 'user.name tweeted' at the beginning", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'OH' at the beginning to 'overheard'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi overheard: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi overheard: " + tweet.text;
         tweet.text = "OH " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'OH:' at the beginning to 'overheard'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi overheard: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi overheard: " + tweet.text;
         tweet.text = "OH: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'RT' at the begining to 'retweeted", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi retweeted: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi retweeted: " + tweet.text;
         tweet.text = "RT " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'RT:' at the begining to 'retweeted", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi retweeted: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi retweeted: " + tweet.text;
         tweet.text = "RT: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'RT' in the tweet to 'Retweeted:'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to: " + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted: Passed! in reply to: " + tweet.text;
         tweet.text = "Passed! RT " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'RT:' in the tweet to 'Retweeted:'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to: " + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted: Passed! in reply to: " + tweet.text;
         tweet.text = "Passed! RT: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replaces 'HT' in the tweet to 'Heard through'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through " + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted: Passed! Heard through " + tweet.text;
         tweet.text = "Passed! HT " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       return it("replaces 'HT:' in the tweet to 'Heard through'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"Passed! Heard through " + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted: Passed! Heard through " + tweet.text;
         tweet.text = "Passed! HT: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -96,7 +96,7 @@
           }
         ];
         tweet.entities.user_mentions = mentions;
-        compiledText = "Katsuya Noguchi tweeted: \"Here's Barcelona FC preparing for the big game against Real Madrid\"";
+        compiledText = "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid";
         tweet.text = "Here's @BarcelonaFC preparing for the big game against @RealMadrid";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -111,7 +111,7 @@
           }
         ];
         tweet.entities.user_mentions = mentions;
-        compiledText = "Katsuya Noguchi retweeted a tweet of Jack Dorsey: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi retweeted a tweet of Jack Dorsey: " + tweet.text;
         tweet.text = "RT @jack: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -126,7 +126,7 @@
           }
         ];
         tweet.entities.user_mentions = mentions;
-        compiledText = "Katsuya Noguchi tweeted: \"Passed! in reply to a tweet of Jack Dorsey: " + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted: Passed! in reply to a tweet of Jack Dorsey: " + tweet.text;
         tweet.text = "Passed! RT @jack: " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -151,7 +151,7 @@
           }
         ];
         tweet.entities.user_mentions = mentions;
-        compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey, Dick Costolo and Michael Jackson: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey, Dick Costolo and Michael Jackson: " + tweet.text;
         tweet.text = "@jack @dick @mj " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -166,7 +166,7 @@
           }
         ];
         tweet.entities.hashtags = hashtags;
-        compiledText = "Katsuya Noguchi tweeted: \"I am testing Myna I Love SF and I Love NY\"";
+        compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY";
         tweet.text = "I am testing #Myna #ILoveSF and #I_Love_NY";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -183,7 +183,7 @@
           }
         ];
         tweet.entities.urls = urls;
-        compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once\"";
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once";
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
@@ -199,7 +199,7 @@
             }
           ];
           tweet.entities.urls = urls;
-          compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)\"";
+          compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)";
           tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
           return expect(Myna.compile(tweet, {
             withURL: true
@@ -215,7 +215,7 @@
             }
           ];
           tweet.entities.urls = urls;
-          compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)\"";
+          compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)";
           tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
           return expect(Myna.compile(tweet, {
             withURL: true
@@ -230,7 +230,7 @@
             }
           ];
           tweet.entities.urls = urls;
-          compiledText = "Katsuya Noguchi tweeted: \"Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)\"";
+          compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)";
           tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
           return expect(Myna.compile(tweet, {
             withURL: true
@@ -250,19 +250,19 @@
           }
         ];
         tweet.entities.user_mentions = mentions;
-        compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: \"" + tweet.text + "\"";
+        compiledText = "Katsuya Noguchi tweeted in reply to Jack Dorsey: " + tweet.text;
         tweet.text = ".@jack " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       it("replace w/ with 'with'", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"" + tweet.text + " with someone\"";
+        compiledText = "Katsuya Noguchi tweeted: " + tweet.text + " with someone";
         tweet.text = "" + tweet.text + " w/ someone";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
       return it("remove smiley faces", function() {
         var compiledText;
-        compiledText = "Katsuya Noguchi tweeted: \"one two three four five six seven\"";
+        compiledText = "Katsuya Noguchi tweeted: one two three four five six seven";
         tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });

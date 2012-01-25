@@ -18,15 +18,14 @@
       # Compiles tweet text to machine speakable text.
     */
     Myna.compile = function(tweet, args) {
-      var endContext, hashtags, mentions, speakable, startContext, text;
+      var hashtags, mentions, speakable, startContext, text;
       text = tweet.text;
       speakable = tweet.user.name;
       mentions = tweet.entities.user_mentions;
       hashtags = tweet.entities.hashtags;
       text = Myna._handle_special_cases(text);
-      startContext = " " + (Myna._get_start_context(mentions, text)) + ": \"";
+      startContext = " " + (Myna._get_start_context(mentions, text)) + ": ";
       text = Myna._slice_context(text);
-      endContext = Myna._get_end_context(text);
       text = Myna._replace_ht_with_speakable(text);
       text = Myna._replace_rt_with_speakable(mentions, text);
       text = Myna._replace_mentions_with_speakable(mentions, text);
@@ -36,7 +35,7 @@
       } else {
         text = Myna._remove_urls(tweet.entities.urls, text);
       }
-      return speakable += "" + startContext + text + endContext;
+      return speakable += "" + startContext + text;
     };
     Myna._get_start_context = function(mentions, text) {
       var in_reply_to, in_reply_to_array, match, name;
@@ -54,9 +53,6 @@
       } else {
         return "tweeted";
       }
-    };
-    Myna._get_end_context = function(text) {
-      return "\"";
     };
     Myna._slice_context = function(text) {
       return text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim();
