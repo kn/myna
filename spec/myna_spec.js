@@ -242,10 +242,16 @@
         tweet.text = ".@jack " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      return it("replace w/ with 'with'", function() {
+      it("replace w/ with 'with'", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: \"" + tweet.text + " with someone\"";
         tweet.text = "" + tweet.text + " w/ someone";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      return it("remove smiley faces", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: \"one two three four five six seven\"";
+        tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

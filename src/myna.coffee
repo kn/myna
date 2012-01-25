@@ -107,7 +107,10 @@
   Myna._handle_special_cases = (text) ->
     # Users sometimes uses . at the begining to publish replies.
     text = text.replace /^\./, ""
+    # Replace w/ with 'with'
     text = text.replace /\sw\/\s/, " with "
+    # Remove smiley faces
+    text = text.replace /\s?:=?[)pD]\s?/g, " "
     text
 
   Myna._get_name_by_screen_name = (mentions, sn) ->

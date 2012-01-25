@@ -120,6 +120,7 @@
     Myna._handle_special_cases = function(text) {
       text = text.replace(/^\./, "");
       text = text.replace(/\sw\/\s/, " with ");
+      text = text.replace(/\s?:=?[)pD]\s?/g, " ");
       return text;
     };
     Myna._get_name_by_screen_name = function(mentions, sn) {
