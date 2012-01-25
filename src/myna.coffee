@@ -22,26 +22,27 @@
     speakable = tweet.user.name
     mentions = tweet.entities.user_mentions
     hashtags = tweet.entities.hashtags
-    
+
     text = Myna._handle_special_cases text
-    
-    speakable += " #{Myna._get_context(mentions, text)}: "
+
+    startContext = " #{Myna._get_start_context mentions, text}: \""
     text = Myna._slice_context text
-    
+    endContext = Myna._get_end_context text
+
     text = Myna._replace_rt_with_speakable mentions, text
-    
+
     text = Myna._replace_mentions_with_speakable mentions, text
-    
+
     text = Myna._replace_hashtags_with_speakable hashtags, text
-    
+
     if args && args.withURL
       text = Myna._replace_urls_with_speakable tweet.entities.urls, text
     else
       text = Myna._remove_urls tweet.entities.urls, text
 
-    speakable += "\"#{text}\""
+    speakable += "#{startContext}#{text}#{endContext}"
 
-  Myna._get_context = (mentions, text) ->
+  Myna._get_start_context = (mentions, text) ->
     if text.match /^OH[\s:]/
       "overheard"
     else if match = text.match /^RT\s@(\w+):/
@@ -55,6 +56,9 @@
       "tweeted in reply to #{in_reply_to}"
     else
       "tweeted"
+
+  Myna._get_end_context = (text) ->
+    "\""
 
   Myna._slice_context = (text) ->
     text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim()
@@ -136,4 +140,5 @@
         else
           break
     arr
+
 ).call @

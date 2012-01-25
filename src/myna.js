@@ -18,14 +18,15 @@
       # Compiles tweet text to machine speakable text.
     */
     Myna.compile = function(tweet, args) {
-      var hashtags, mentions, speakable, text;
+      var endContext, hashtags, mentions, speakable, startContext, text;
       text = tweet.text;
       speakable = tweet.user.name;
       mentions = tweet.entities.user_mentions;
       hashtags = tweet.entities.hashtags;
       text = Myna._handle_special_cases(text);
-      speakable += " " + (Myna._get_context(mentions, text)) + ": ";
+      startContext = " " + (Myna._get_start_context(mentions, text)) + ": \"";
       text = Myna._slice_context(text);
+      endContext = Myna._get_end_context(text);
       text = Myna._replace_rt_with_speakable(mentions, text);
       text = Myna._replace_mentions_with_speakable(mentions, text);
       text = Myna._replace_hashtags_with_speakable(hashtags, text);
@@ -34,9 +35,9 @@
       } else {
         text = Myna._remove_urls(tweet.entities.urls, text);
       }
-      return speakable += "\"" + text + "\"";
+      return speakable += "" + startContext + text + endContext;
     };
-    Myna._get_context = function(mentions, text) {
+    Myna._get_start_context = function(mentions, text) {
       var in_reply_to, in_reply_to_array, match, name;
       if (text.match(/^OH[\s:]/)) {
         return "overheard";
@@ -52,6 +53,9 @@
       } else {
         return "tweeted";
       }
+    };
+    Myna._get_end_context = function(text) {
+      return "\"";
     };
     Myna._slice_context = function(text) {
       return text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim();
