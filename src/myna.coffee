@@ -8,7 +8,7 @@
   else
     Myna = root.Myna = {}
 
-  Myna.VERSION = '0.1.0'
+  Myna.VERSION = '0.2.0'
 
   Myna.noConflict = ->
     root.Myna = previousMyna
