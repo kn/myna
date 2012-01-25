@@ -160,7 +160,7 @@
       });
     });
     return describe("Tweet with urls", function() {
-      it("replaces urls with display_url if it is available", function() {
+      it("removes urls", function() {
         var compiledText, urls;
         urls = [
           {
@@ -171,36 +171,59 @@
           }
         ];
         tweet.entities.urls = urls;
-        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)";
+        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once";
         tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      it("replaces urls with expanded_url if it is display_url is not available", function() {
-        var compiledText, urls;
-        urls = [
-          {
-            "url": "http://t.co/0JG5Mcq",
-            "expanded_url": "http://expanded.twitter.com/2011/05/twitter-for-mac-update.html",
-            "indices": [84, 103]
-          }
-        ];
-        tweet.entities.urls = urls;
-        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)";
-        tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
-        return expect(Myna.compile(tweet)).toEqual(compiledText);
-      });
-      return it("replaces urls with host name of url if display_url and expanded_url are not available", function() {
-        var compiledText, urls;
-        urls = [
-          {
-            "url": "http://t.co/0JG5Mcq",
-            "indices": [84, 103]
-          }
-        ];
-        tweet.entities.urls = urls;
-        compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)";
-        tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
-        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      return describe("with withURL option", function() {
+        it("replaces urls with display_url if it is available", function() {
+          var compiledText, urls;
+          urls = [
+            {
+              "url": "http://t.co/0JG5Mcq",
+              "display_url": "display.twitter.com/2011/05/twitte…",
+              "expanded_url": "http://blog.twitter.com/2011/05/twitter-for-mac-update.html",
+              "indices": [84, 103]
+            }
+          ];
+          tweet.entities.urls = urls;
+          compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to display dot twitter dot com)";
+          tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
+          return expect(Myna.compile(tweet, {
+            withURL: true
+          })).toEqual(compiledText);
+        });
+        it("replaces urls with expanded_url if it is display_url is not available", function() {
+          var compiledText, urls;
+          urls = [
+            {
+              "url": "http://t.co/0JG5Mcq",
+              "expanded_url": "http://expanded.twitter.com/2011/05/twitter-for-mac-update.html",
+              "indices": [84, 103]
+            }
+          ];
+          tweet.entities.urls = urls;
+          compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to expanded dot twitter dot com)";
+          tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
+          return expect(Myna.compile(tweet, {
+            withURL: true
+          })).toEqual(compiledText);
+        });
+        return it("replaces urls with host name of url if display_url and expanded_url are not available", function() {
+          var compiledText, urls;
+          urls = [
+            {
+              "url": "http://t.co/0JG5Mcq",
+              "indices": [84, 103]
+            }
+          ];
+          tweet.entities.urls = urls;
+          compiledText = "Katsuya Noguchi tweeted: Twitter for Mac is now easier and faster, and you can open multiple windows at once (Link to t dot co)";
+          tweet.text = "Twitter for Mac is now easier and faster, and you can open multiple windows at once http://t.co/0JG5Mcq";
+          return expect(Myna.compile(tweet, {
+            withURL: true
+          })).toEqual(compiledText);
+        });
       });
     });
   });

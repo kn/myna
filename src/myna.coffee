@@ -17,7 +17,7 @@
   ###
   # Compiles tweet text to machine speakable text.
   ###
-  Myna.compile = (tweet) ->
+  Myna.compile = (tweet, args) ->
     text = tweet.text
     speakable = tweet.user.name
     mentions = tweet.entities.user_mentions
@@ -32,8 +32,11 @@
     
     text = Myna._replace_hashtags_with_speakable hashtags, text
     
-    text = Myna._replace_urls_with_speakable tweet.entities.urls, text
-    
+    if args && args.withURL
+      text = Myna._replace_urls_with_speakable tweet.entities.urls, text
+    else
+      text = Myna._remove_urls tweet.entities.urls, text
+
     speakable += text
 
   Myna._get_context = (mentions, text) ->
@@ -82,6 +85,12 @@
       regex = new RegExp "#{url.display_url}|#{url.url}"
       text = text.replace regex, "(Link to #{readableUrl})"
     text
+  
+  Myna._remove_urls = (urls, text) ->
+    for url in urls
+      regex = new RegExp "\s?(#{url.display_url}|#{url.url})\s?"
+      text = text.replace regex, " "
+    text.trim()
 
   Myna._replace_mentions_with_speakable = (mentions, text) ->
     for mention in mentions

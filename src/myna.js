@@ -17,7 +17,7 @@
     /*
       # Compiles tweet text to machine speakable text.
     */
-    Myna.compile = function(tweet) {
+    Myna.compile = function(tweet, args) {
       var hashtags, mentions, speakable, text;
       text = tweet.text;
       speakable = tweet.user.name;
@@ -28,7 +28,11 @@
       text = Myna._replace_rt_with_speakable(mentions, text);
       text = Myna._replace_mentions_with_speakable(mentions, text);
       text = Myna._replace_hashtags_with_speakable(hashtags, text);
-      text = Myna._replace_urls_with_speakable(tweet.entities.urls, text);
+      if (args && args.withURL) {
+        text = Myna._replace_urls_with_speakable(tweet.entities.urls, text);
+      } else {
+        text = Myna._remove_urls(tweet.entities.urls, text);
+      }
       return speakable += text;
     };
     Myna._get_context = function(mentions, text) {
@@ -89,6 +93,15 @@
         text = text.replace(regex, "(Link to " + readableUrl + ")");
       }
       return text;
+    };
+    Myna._remove_urls = function(urls, text) {
+      var regex, url, _i, _len;
+      for (_i = 0, _len = urls.length; _i < _len; _i++) {
+        url = urls[_i];
+        regex = new RegExp("\s?(" + url.display_url + "|" + url.url + ")\s?");
+        text = text.replace(regex, " ");
+      }
+      return text.trim();
     };
     Myna._replace_mentions_with_speakable = function(mentions, text) {
       var mention, regex, _i, _len;
