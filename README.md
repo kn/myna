@@ -52,7 +52,7 @@ Examples
 
     Myna.compile(tweet);
     
-returns Katsuya Noguchi tweeted: "Myna is awesome"
+returns "Katsuya Noguchi tweeted: Myna is awesome"
 
     tweet = {
       "text": "OH: Myna is awesome!",
@@ -66,7 +66,7 @@ returns Katsuya Noguchi tweeted: "Myna is awesome"
 
     Myna.compile(tweet);
 
-returns Katsuya Noguchi overheard: "Myna is awesome!"
+returns "Katsuya Noguchi overheard: Myna is awesome!"
 
     tweet = {
       "text": "Here's @BarcelonaFC preparing for the big game against @RealMadrid",
@@ -91,6 +91,6 @@ returns Katsuya Noguchi overheard: "Myna is awesome!"
 
     Myna.compile(tweet);
 
-returns Katsuya Noguchi tweeted: "Here's Barcelona FC preparing for the big game against Real Madrid"
+returns "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid"
 
 For more examples, please take a look at myna_spec.[coffee|js] file.
