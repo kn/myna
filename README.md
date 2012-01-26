@@ -12,14 +12,30 @@ Add following tag into your html file:
 
     <script type="text/javascript" src="public/javascripts/myna-min.js"></script>
 
-Compile a tweet object to speakable text:
+Compile a tweet object to speakable text with urls removed:
 
     speakable = Myna.compile(tweet);
+
+Compile a tweet object to speakable text with urls included:
+
+    speakable = Myna.compile(tweet, {withURL: true})
 
 That's it!
 
 Compilation Detail
 ==================
+
+- OH -> "Over heard"
+- RT -> "Retweeted"
+- HT -> "Heard through"
+- @screenname -> "Full Name"
+- #HashTag -> "Hash Tag"
+- #Hash_Tag -> "Hash Tag"
+- url -> "" (This is configurable)
+- w/ -> "with"
+- :) -> ""
+- & -> "and"
+- and more smart compilation!
 
 Examples
 ========
