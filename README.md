@@ -18,7 +18,7 @@ Compile a tweet object to speakable text with urls removed:
 
 Compile a tweet object to speakable text with urls included:
 
-    speakable = Myna.compile(tweet, {withURL: true})
+    speakable = Myna.compile(tweet, {withURL: true});
 
 That's it!
 
