@@ -126,6 +126,8 @@
     text = text.replace /\sw\/\s/, " with "
     # Remove smiley faces
     text = text.replace /\s?:=?[)pD]\s?/g, " "
+    # Replace & with 'and'
+    text = text.replace /\s&\s/g, " and "
     text
 
   Myna._get_name_by_screen_name = (mentions, sn) ->

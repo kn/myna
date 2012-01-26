@@ -260,3 +260,8 @@ describe "myna", ->
       compiledText = "Katsuya Noguchi tweeted: one two three four five six seven"
       tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven"
       expect(Myna.compile(tweet)).toEqual compiledText
+
+    it "replace & with 'and'", =>
+      compiledText = "Katsuya Noguchi tweeted: one and two"
+      tweet.text = "one & two"
+      expect(Myna.compile(tweet)).toEqual compiledText

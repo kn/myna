@@ -283,6 +283,7 @@
       });
     });
     return describe("special cases", function() {
+      var _this = this;
       it("removes dot at the begining", function() {
         var compiledText, mentions;
         mentions = [
@@ -304,10 +305,16 @@
         tweet.text = "" + tweet.text + " w/ someone";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      return it("remove smiley faces", function() {
+      it("remove smiley faces", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: one two three four five six seven";
         tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      return it("replace & with 'and'", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: one and two";
+        tweet.text = "one & two";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

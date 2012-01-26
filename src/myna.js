@@ -137,6 +137,7 @@
       text = text.replace(/^\./, "");
       text = text.replace(/\sw\/\s/, " with ");
       text = text.replace(/\s?:=?[)pD]\s?/g, " ");
+      text = text.replace(/\s&\s/g, " and ");
       return text;
     };
     Myna._get_name_by_screen_name = function(mentions, sn) {
