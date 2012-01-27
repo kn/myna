@@ -282,7 +282,7 @@
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });
-    return describe("special cases", function() {
+    describe("special cases", function() {
       var _this = this;
       it("removes dot at the begining", function() {
         var compiledText, mentions;
@@ -299,22 +299,36 @@
         tweet.text = ".@jack " + tweet.text;
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      it("replace w/ with 'with'", function() {
+      it("replaces w/ with 'with'", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: " + tweet.text + " with someone";
         tweet.text = "" + tweet.text + " w/ someone";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      it("remove smiley faces", function() {
+      it("removes smiley faces", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: one two three four five six seven";
         tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
-      return it("replace & with 'and'", function() {
+      it("replaces & with 'and'", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: one and two";
         tweet.text = "one & two";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      return it("replaces <3 with 'love'", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: I love you";
+        tweet.text = "I <3 you";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+    });
+    return describe("distractive symbols", function() {
+      return it("removes sole #", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: I you";
+        tweet.text = "I # you";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

@@ -251,17 +251,30 @@ describe "myna", ->
       tweet.text = ".@jack #{tweet.text}"
       expect(Myna.compile(tweet)).toEqual compiledText
 
-    it "replace w/ with 'with'", ->
+    it "replaces w/ with 'with'", ->
       compiledText = "Katsuya Noguchi tweeted: #{tweet.text} with someone"
       tweet.text = "#{tweet.text} w/ someone"
       expect(Myna.compile(tweet)).toEqual compiledText
 
-    it "remove smiley faces", ->
+    it "removes smiley faces", ->
       compiledText = "Katsuya Noguchi tweeted: one two three four five six seven"
       tweet.text = "one :) two :p three :D four :=) five :=D six :=p seven"
       expect(Myna.compile(tweet)).toEqual compiledText
 
-    it "replace & with 'and'", =>
+    it "replaces & with 'and'", =>
       compiledText = "Katsuya Noguchi tweeted: one and two"
       tweet.text = "one & two"
       expect(Myna.compile(tweet)).toEqual compiledText
+    
+    it "replaces <3 with 'love'", ->
+      compiledText = "Katsuya Noguchi tweeted: I love you"
+      tweet.text = "I <3 you"
+      expect(Myna.compile(tweet)).toEqual compiledText
+  
+  describe "distractive symbols", ->
+    
+    it "removes sole #", ->
+      compiledText = "Katsuya Noguchi tweeted: I you"
+      tweet.text = "I # you"
+      expect(Myna.compile(tweet)).toEqual compiledText
+

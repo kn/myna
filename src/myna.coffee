@@ -43,6 +43,8 @@
       text = Myna._replace_urls_with_speakable tweet.entities.urls, text
     else
       text = Myna._remove_urls tweet.entities.urls, text
+    
+    text = Myna._remove_distractive_symbols text
 
     speakable += "#{startContext}#{text}"
 
@@ -128,6 +130,12 @@
     text = text.replace /\s?:=?[)pD]\s?/g, " "
     # Replace & with 'and'
     text = text.replace /\s&\s/g, " and "
+    # Replace <3 with 'love'
+    text = text.replace /\s<3\s/g, " love " 
+    text
+
+  Myna._remove_distractive_symbols = (text) ->
+    text = text.replace /\s#\s/g, " "
     text
 
   Myna._get_name_by_screen_name = (mentions, sn) ->

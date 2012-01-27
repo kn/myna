@@ -37,6 +37,7 @@
       } else {
         text = Myna._remove_urls(tweet.entities.urls, text);
       }
+      text = Myna._remove_distractive_symbols(text);
       return speakable += "" + startContext + text;
     };
     Myna._get_start_context = function(mentions, media, text) {
@@ -138,6 +139,11 @@
       text = text.replace(/\sw\/\s/, " with ");
       text = text.replace(/\s?:=?[)pD]\s?/g, " ");
       text = text.replace(/\s&\s/g, " and ");
+      text = text.replace(/\s<3\s/g, " love ");
+      return text;
+    };
+    Myna._remove_distractive_symbols = function(text) {
+      text = text.replace(/\s#\s/g, " ");
       return text;
     };
     Myna._get_name_by_screen_name = function(mentions, sn) {
