@@ -3,7 +3,7 @@
   previousMyna = root.Myna
 
   Myna = {}
-  if typeof exports != 'undefined'
+  if typeof window == 'undefined'
     Myna = exports
   else
     Myna = root.Myna = {}
