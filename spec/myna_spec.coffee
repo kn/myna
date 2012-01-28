@@ -277,4 +277,9 @@ describe "myna", ->
       compiledText = "Katsuya Noguchi tweeted: I you"
       tweet.text = "I # you"
       expect(Myna.compile(tweet)).toEqual compiledText
+    
+    it "removes ^ _ ;", ->
+      compiledText = "Katsuya Noguchi tweeted: one two three"
+      tweet.text = "one^ two ^_;three;"
+      expect(Myna.compile(tweet)).toEqual compiledText
 

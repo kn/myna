@@ -325,10 +325,16 @@
       });
     });
     return describe("distractive symbols", function() {
-      return it("removes sole #", function() {
+      it("removes sole #", function() {
         var compiledText;
         compiledText = "Katsuya Noguchi tweeted: I you";
         tweet.text = "I # you";
+        return expect(Myna.compile(tweet)).toEqual(compiledText);
+      });
+      return it("removes ^ _ ;", function() {
+        var compiledText;
+        compiledText = "Katsuya Noguchi tweeted: one two three";
+        tweet.text = "one^ two ^_;three;";
         return expect(Myna.compile(tweet)).toEqual(compiledText);
       });
     });

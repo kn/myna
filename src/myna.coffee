@@ -45,6 +45,8 @@
       text = Myna._remove_urls tweet.entities.urls, text
     
     text = Myna._remove_distractive_symbols text
+    
+    text = Myna._replace_symbols text
 
     speakable += "#{startContext}#{text}"
 
@@ -123,7 +125,10 @@
 
   Myna._handle_special_cases = (text) ->
     # Users sometimes uses . at the begining to publish replies.
-    text = text.replace /^\./, ""
+    text = text.replace /^\./, "" 
+    text
+
+  Myna._replace_symbols = (text) ->
     # Replace w/ with 'with'
     text = text.replace /\sw\/\s/, " with "
     # Remove smiley faces
@@ -131,11 +136,13 @@
     # Replace & with 'and'
     text = text.replace /\s&\s/g, " and "
     # Replace <3 with 'love'
-    text = text.replace /\s<3\s/g, " love " 
+    text = text.replace /\s<3\s/g, " love "
+    text = text.replace /\s&lt;3\s/g, "love"
     text
 
   Myna._remove_distractive_symbols = (text) ->
     text = text.replace /\s#\s/g, " "
+    text = text.replace /[_;\^]/g, ""
     text
 
   Myna._get_name_by_screen_name = (mentions, sn) ->
