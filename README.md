@@ -3,15 +3,13 @@ Myna
 
 Myna is a JS library that takes a tweet object and compiles it to machine speakable text. This speakable text can be easily spoken by text-to-speech engine.
 
-For example, following tweet:
+For example, following my tweet:
 
-Katsuya Noguchi
-OH: Myna is #SuperAwsome for #TTS and #TwitterBeginners! It is written by @kn bit.ly/ykbz6b
+"OH: Myna is #SuperAwsome for #TTS and #TwitterBeginners! It is written by @kn bit.ly/ykbz6b"
 
-compiled into plain English:
+compiles into plain English:
 
-Katsuya Noguchi overheard:
-Myna is Super Awesome for TTS and Twitter Beginners! It is written by Katsuya Noguchi
+"Katsuya Noguchi overheard: Myna is Super Awesome for TTS and Twitter Beginners! It is written by Katsuya Noguchi"
 
 Usage
 =====
