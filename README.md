@@ -11,11 +11,6 @@ compiles into plain English:
 
 "Katsuya Noguchi overheard: Myna is Super Awesome for TTS and Twitter Beginners! It is written by Katsuya Noguchi"
 
-Dependencies
-============
-
-Myna uses [twitter-text-js](http://github.com/bcherry/twitter-text-js)
-
 Usage
 =====
 
@@ -23,7 +18,6 @@ Download myna-min.js file.
 
 Add following tag into your html file:
 
-	<script type="text/javascript" src="public/javascripts/twitter-text.js"></script>
     <script type="text/javascript" src="public/javascripts/myna-min.js"></script>
 
 Compile a tweet object to speakable text with urls removed:
