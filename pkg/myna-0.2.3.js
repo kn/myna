@@ -1,3 +1,14 @@
+/*!
+ * myna 0.2.3
+ *
+ * Copyright 2012 Katsuya Noguchi
+ *
+ * Licensed under the MIT License
+ * you may not use this work except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *    http://www.github.com/katsuyan/myna/blob/master/LICENSE
+ */
 
   (function() {
     var Myna, previousMyna, root;

@@ -3,13 +3,10 @@
   previousMyna = root.Myna
 
   Myna = {}
-  # node.js does not define window for global name space
-  if typeof window == 'undefined'
+  if typeof exports != 'undefined'
     Myna = exports
   else
     Myna = root.Myna = {}
-
-  Myna.VERSION = '0.2.3'
 
   Myna.noConflict = ->
     root.Myna = previousMyna
