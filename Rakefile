@@ -6,7 +6,9 @@ require 'digest'
 namespace :test do
   desc "Run JavaScript test suite"
   task :run do
-    exec('open spec/spec_runner.html')
+    system "coffee -o ./src -c ./src/myna.coffee"
+    system "coffee -o ./spec -c ./spec/myna_spec.coffee"
+    system "open spec/spec_runner.html"
   end
 end
 
