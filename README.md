@@ -102,3 +102,52 @@ returns "Katsuya Noguchi overheard: Myna is awesome!"
 returns "Katsuya Noguchi tweeted: Here's Barcelona FC preparing for the big game against Real Madrid"
 
 For more examples, please take a look at myna_spec.[coffee|js] file.
+
+Test
+====
+
+To run a test, from the project root, run:
+
+    rake test
+
+Your default browser will open the test suite.
+
+Packaging
+=========
+
+Official versions are kept in the `pkg/` directory.  To build a package run the following from project root:
+
+    rake build
+
+This will make a new file at `pkg/myna-version.js`.
+
+Reporting Bugs
+==============
+
+Please direct bug reports to the [myna issue tracker on GitHub](http://github.com/katsuyan/myna/issues)
+
+Copyright and License
+====================
+
+Copyright 2012 Katsuya Noguchi
+
+Licensed under the MIT License
+you may not use this work except in compliance with the License.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
