@@ -137,8 +137,14 @@ describe "myna", ->
     
     it "replaces hashtags with the equivalent spacified word", ->
       hashtags = [{
-        "text": "",
-        "indices": []
+        "text": "Myna",
+        "indices": [13, 17]
+      }, {
+        "text": "ILoveSF",
+        "indices": [19, 26]
+      }, {
+        "text": "I_Love_NY",
+        "indices": [32, 41]
       }]
       tweet.entities.hashtags = hashtags
       compiledText = "Katsuya Noguchi tweeted: I am testing Myna I Love SF and I Love NY"
@@ -235,7 +241,7 @@ describe "myna", ->
             ]
       tweet.entities.media = media
       compiledText = "Katsuya Noguchi tweeted with photo: Photos on Twitter: taking flight"
-      tweet.text = "#Photos on Twitter: taking flight http://t.co/qbJx26r"
+      tweet.text = "Photos on Twitter: taking flight http://t.co/qbJx26r"
       expect(Myna.compile(tweet)).toEqual compiledText
 
   describe "special cases", ->

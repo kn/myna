@@ -11,7 +11,46 @@
   Myna.noConflict = ->
     root.Myna = previousMyna
     @
+  
+  ###
+  # Regex used in Myna
+  ###
 
+  Regex = Myna.Regex = {}
+
+  Regex.buildRegex = (regex, flags) ->
+    flags = flags ? ""
+    if typeof regex != "string"
+      if regex.global && flags.indexOf("g") < 0
+        flags += "g"
+      if regex.ignoreCase && flags.indexOf("i") < 0
+        flags += "i"
+      if regex.multiline && flags.indexOf("m") < 0
+        flags += "m"
+      regex = regex.source
+    new RegExp(regex.replace(/#\{(\w+)\}/g, (match, name) ->
+      newRegex = Regex[name] || ""
+      if typeof newRegex != "string"
+        newRegex = newRegex.source
+      newRegex
+      ), flags)
+
+  Regex.atSigns = "@＠"
+  Regex.mention = Regex.buildRegex /(^|[^a-zA-Z0-9_!#$%&*#{atSigns}])([#{atSigns}])([a-zA-Z0-9_]{1,20})/
+  Regex.oh_context = /^OH[\s:]/
+  Regex.rt_context = /^RT[\s:]/
+  Regex.rt_with_mention_context = Regex.buildRegex /^RT#{mention}:/
+  Regex.reply_context = Regex.buildRegex /^(#{mention})+/
+  Regex.rt_with_mention = /RT\s@(\w+):\s/
+  Regex.rt = /\sRT(\s|:\s)/
+  Regex.ht = /HT:?/
+  Regex.with = /\sw\/\s/g
+  Regex.smiley_face = /\s?:=?[)pD]\s?/g
+  Regex.and = /\s&\s/g
+  Regex.love = /\s(<3|&lt;3)\s/g
+  Regex.distractive_symbol = /[_;\^#]/g
+  Regex.double_spaces = /\s\s/g
+  
   ###
   # Compiles tweet text to machine speakable text.
   ###
@@ -50,14 +89,14 @@
 
   Myna._get_start_context = (mentions, media, text) ->
     context = ""
-    if text.match /^OH[\s:]/
+    if text.match Regex.oh_context
       context = "overheard"
-    else if match = text.match /^RT\s@(\w+):/
-      name = Myna._get_name_by_screen_name mentions, match[1]
+    else if match = text.match Regex.rt_with_mention_context
+      name = Myna._get_name_by_screen_name mentions, match[3]
       context = "retweeted a tweet of #{name}"
-    else if text.match /^RT[\s:]/
+    else if text.match Regex.rt_context
       context = "retweeted"
-    else if text.match /^(@\w+\s)+/
+    else if text.match Regex.reply_context
       in_reply_to_array = Myna._get_in_reply_to_array mentions
       in_reply_to = Myna._en_and_join in_reply_to_array
       context = "tweeted in reply to #{in_reply_to}"
@@ -68,23 +107,25 @@
     context
 
   Myna._slice_context = (text) ->
-    text.replace(/^(OH[\s:]|RT\s@(\w+):|RT[\s:]|(@\w+\s)+)/, "").trim()
+    text = text.replace(Regex.oh_context, "").trim()
+    text = text.replace(Regex.rt_with_mention_context, "").trim()
+    text = text.replace(Regex.rt_context, "").trim()
+    text = text.replace(Regex.reply_context, "").trim()
+    text
 
   Myna._replace_rt_with_speakable = (mentions, text) ->
-    if match = text.match /\sRT\s@(\w+):\s/
+    if match = text.match Regex.rt_with_mention
       name = Myna._get_name_by_screen_name mentions, match[1]
-      text = text.replace /\sRT\s@\w+:\s/, " in reply to a tweet of #{name}: "
-    text.replace /\sRT(\s|:\s)/, " in reply to: "
+      text = text.replace match[0], "in reply to a tweet of #{name}: "
+    text.replace Regex.rt, " in reply to: "
 
   Myna._replace_ht_with_speakable = (text) ->
-    text.replace /HT:?/, "Heard through"
+    text.replace Regex.ht, "Heard through"
 
   Myna._replace_hashtags_with_speakable = (hashtags, text) ->
-    hashtags = text.match /#\w+/g
-    if hashtags?
-      for hashtag in hashtags
-        regex = new RegExp hashtag
-        text = text.replace regex, Myna._spacify(hashtag[1..hashtag.length-1])
+    for hashtag in hashtags
+      regex = new RegExp "##{hashtag.text}"
+      text = text.replace regex, Myna._spacify(hashtag.text)
     text
 
   Myna._replace_urls_with_speakable = (urls, text) ->
@@ -128,19 +169,18 @@
 
   Myna._replace_symbols = (text) ->
     # Replace w/ with 'with'
-    text = text.replace /\sw\/\s/, " with "
+    text = text.replace Regex.with, " with "
     # Remove smiley faces
-    text = text.replace /\s?:=?[)pD]\s?/g, " "
+    text = text.replace Regex.smiley_face, " "
     # Replace & with 'and'
-    text = text.replace /\s&\s/g, " and "
+    text = text.replace Regex.and, " and "
     # Replace <3 with 'love'
-    text = text.replace /\s<3\s/g, " love "
-    text = text.replace /\s&lt;3\s/g, "love"
+    text = text.replace Regex.love, " love "
     text
 
   Myna._remove_distractive_symbols = (text) ->
-    text = text.replace /\s#\s/g, " "
-    text = text.replace /[_;\^]/g, ""
+    text = text.replace Regex.distractive_symbol, ""
+    text = text.replace Regex.double_spaces, " "
     text
 
   Myna._get_name_by_screen_name = (mentions, sn) ->
